@@ -1,85 +1,190 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<title>Presidium Systems - Seat Picker</title>
-<link rel="icon" href="icon.png" type="image/png">
-<style>
-* { box-sizing: border-box; transition: all 0.3s ease; }
-body {
-font-family: 'Noto Sans KR', sans-serif;
-margin: 0;
-background: linear-gradient(to bottom, #e0f2fe, #dbeafe);
-overflow-x: hidden;
+  <meta charset="UTF-8">
+  <title>자리 뽑기</title>
+  <link rel="icon" href="icon.png" type="image/png">
+  <style>
+    * { box-sizing: border-box; transition: all 0.3s ease; }
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      margin: 0;
+      background: linear-gradient(to bottom, #e0f2fe, #dbeafe);
+      overflow-x: hidden;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 100px auto;
+      padding: 50px ;
+      border-radius: 20px;
+      background: white;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    h1 { text-align: center; color: #1d4ed8; }
+    label { font-weight: bold; display: block; color: #374151; margin-top: 20px; }
+    input, button {
+      width: 100%; padding: 10px; margin-top: 5px;
+      border-radius: 10px; font-size: 16px;
+    }
+    button {
+      background: #6366f1; color: white; border: none; font-weight: bold; margin-top: 15px;
+    }
+    button:active { transform: scale(0.97); }
+    .mode-selector {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* 가운데 정렬 */
+  gap: 10px;
+  margin-bottom: 15px;
 }
-header {
-background: #1d4ed8;
-color: white;
-padding: 15px 40px;
-display: flex;
-justify-content: space-between;
-align-items: center;
-}
-header .logo {
-font-size: 20px;
-font-weight: bold;
-}
-nav a {
-color: white;
-margin: 0 10px;
-text-decoration: none;
-font-weight: 500;
-}
-nav a:hover { text-decoration: underline; }
-nav button {
-margin-left: 10px;
-border: none;
-background: transparent;
-font-size: 18px;
-cursor: pointer;
-}
-.container {
-max-width: 1000px;
-margin: 50px auto;
-padding: 40px;
-border-radius: 20px;
-background: white;
-box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-}
-h1 { text-align: center; color: #1d4ed8; }
-label { font-weight: bold; display: block; color: #374151; margin-top: 20px; }
-input, button {
-width: 100%; padding: 10px; margin-top: 5px;
-border-radius: 10px; font-size: 16px;
-}
-button {
-background: #6366f1; color: white; border: none; font-weight: bold; margin-top: 15px;
-}
-button:active { transform: scale(0.97); }
-.mode-selector {
-display: flex;
-flex-wrap: wrap;
-justify-content: center;
-gap: 10px;
-margin-bottom: 15px;
-}
+
 .mode-selector button {
-flex: 1 1 auto;
-min-width: 120px;
-max-width: 160px;
+  flex: 1 1 auto;
+  min-width: 120px;
+  max-width: 160px;
+}
+
+
+    .group {
+      background: #f3f4f6; padding: 15px; margin-bottom: 15px;
+      border-left: 5px solid #6366f1; border-radius: 10px;
+    }
+    .group strong {
+      color: #4f46e5; display: block; margin-bottom: 5px;
+    }
+    .group span {
+      display: inline-block; margin: 4px; padding: 6px 10px;
+      background: #e0e7ff; border-radius: 8px;
+    }
+    .group span:hover {
+      background: #c7d2fe; transform: scale(1.1);
+    }
+    .result {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: space-between;
 }
 .group {
-background: #f3f4f6; padding: 15px; margin-bottom: 15px;
-border-left: 5px solid #6366f1; border-radius: 10px;
+  width: 48%; /* 2개씩 정렬되도록 반반 너비 */
 }
-.group strong {
-color: #4f46e5; display: block; margin-bottom: 5px;
+
+    .hidden { display: none; }
+    #wheelWrapper {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 20px;
+    }
+    #wheelCanvas {
+      margin-top: 40px;
+      border-radius: 50%;
+    }
+    .pointer {
+      width: 0;
+      height: 0;
+      border-left: 20px solid transparent;
+      border-right: 20px solid transparent;
+      border-top: 30px solid red;
+      position: absolute;
+      top: 15px;
+      z-index: 10;
+    }
+    #wheelResult {
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      color: #1d4ed8;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>자리 뽑기</h1>
+    <div class="mode-selector">
+      <button onclick="setMode('name')">이름으로 뽑기</button>
+      <button onclick="setMode('number')">번호로 뽑기</button>
+      <button onclick="setMode('lotto')">제비뽑기</button>
+      <button onclick="setMode('wheel')">돌림판</button>
+      <button onclick="setMode('range')">범위별 랜덤 조</button>
+    </div>
+
+    <div id="nameMode">
+      <label>이름 목록 (쉼표로 구분)</label>
+      <input type="text" id="names" placeholder="예: 철수, 영희, 민수">
+      <label>모둠 수</label>
+      <input type="number" id="groupCountName" placeholder="예: 3">
+      <button onclick="drawByName()">이름 모둠 뽑기</button>
+    </div>
+
+    <div id="numberMode" class="hidden">
+      <label>총 인원 수</label>
+      <input type="number" id="count" placeholder="예: 10">
+      <label>모둠 수</label>
+      <input type="number" id="groupCount" placeholder="예: 3">
+      <button onclick="drawByNumber()">번호 모둠 뽑기</button>
+    </div>
+
+    <div id="lottoMode" class="hidden">
+      <label>제비뽑기 대상 수</label>
+      <input type="number" id="lottoCount" placeholder="예: 10">
+      <label>몇 명을 뽑을까요?</label>
+      <input type="number" id="lottoDraw" placeholder="예: 2">
+      <button onclick="drawLotto()">제비 뽑기</button>
+    </div>
+
+    <div id="wheelMode" class="hidden">
+      <label>대상 이름 (쉼표로 구분) 또는 숫자 개수</label>
+      <input type="text" id="wheelInput" placeholder="예: 철수, 영희 또는 10" oninput="parseWheelInput()">
+      <button onclick="spinWheel()">🎡 돌리기</button>
+      <div id="wheelWrapper">
+        <div class="pointer"></div>
+        <canvas id="wheelCanvas" width="300" height="300"></canvas>
+      </div>
+      <div id="wheelResult"></div>
+    </div>
+
+    <div id="rangeMode" class="hidden">
+      <label>총 인원 수</label>
+      <input type="number" id="totalCount" placeholder="예: 17">
+      <label>모둠 수</label>
+      <input type="number" id="rangeGroupCount" placeholder="예: 8">
+      <label>범위1 (예: 1-8)</label>
+      <input type="text" id="rangeOne" placeholder="1-8">
+      <label>범위2 (예: 9-17)</label>
+      <input type="text" id="rangeTwo" placeholder="9-17">
+      <button onclick="drawByRange()">범위별 랜덤 조 뽑기</button>
+    </div>
+
+    <button onclick="clearResult()">결과 초기화</button>
+    <div id="result" class="result"></div>
+  </div>
+
+<script>
+function setMode(mode) {
+  ['name', 'number', 'lotto', 'wheel', 'range'].forEach(id => {
+    const el = document.getElementById(id + 'Mode');
+    if (el) el.classList.add('hidden');
+  });
+  const show = document.getElementById(mode + 'Mode');
+  if (show) show.classList.remove('hidden');
+  clearResult();
+  if (mode === 'wheel') {
+    const input = document.getElementById('wheelInput');
+    if (!input.value.trim()) input.value = '4';
+    parseWheelInput();
+  }
 }
-.group span {
-display: inline-block; margin: 4px; padding: 6px 10px;
-background: #e0e7ff; border-radius: 8px;
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
 }
-.group span:hover {
 
 function drawByName() {
   const names = document.getElementById('names').value.split(',').map(n => n.trim()).filter(n => n);
