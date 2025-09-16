@@ -117,51 +117,51 @@
     </div>
 
     <div id="nameMode">
-      <label id="lblNames">이름 목록 (쉼표로 구분)</label>
-      <input type="text" id="names" placeholder="예: 철수, 영희, 민수">
-      <label id="lblGroupCountName">모둠 수</label>
-      <input type="number" id="groupCountName" placeholder="예: 3">
-      <button id="btnDrawByName" onclick="drawByName()">이름 모둠 뽑기</button>
-    </div>
+  <label id="lblNames">이름 목록 (쉼표로 구분)</label>
+  <input type="text" id="names" placeholder="예: 철수, 영희, 민수" data-i18n-placeholder="phNames">
+  <label id="lblGroupCountName">모둠 수</label>
+  <input type="number" id="groupCountName" placeholder="예: 3" data-i18n-placeholder="phGroupCountName">
+  <button id="btnDrawByName" onclick="drawByName()">이름 모둠 뽑기</button>
+</div>
 
-    <div id="numberMode" class="hidden">
-      <label id="lblCount">총 인원 수</label>
-      <input type="number" id="count" placeholder="예: 10">
-      <label id="lblGroupCount">모둠 수</label>
-      <input type="number" id="groupCount" placeholder="예: 3">
-      <button id="btnDrawByNumber" onclick="drawByNumber()">번호 모둠 뽑기</button>
-    </div>
+<div id="numberMode" class="hidden">
+  <label id="lblCount">총 인원 수</label>
+  <input type="number" id="count" placeholder="예: 10" data-i18n-placeholder="phCount">
+  <label id="lblGroupCount">모둠 수</label>
+  <input type="number" id="groupCount" placeholder="예: 3" data-i18n-placeholder="phGroupCount">
+  <button id="btnDrawByNumber" onclick="drawByNumber()">번호 모둠 뽑기</button>
+</div>
 
-    <div id="lottoMode" class="hidden">
-      <label id="lblLottoCount">제비뽑기 대상 수</label>
-      <input type="number" id="lottoCount" placeholder="예: 10">
-      <label id="lblLottoDraw">몇 명을 뽑을까요?</label>
-      <input type="number" id="lottoDraw" placeholder="예: 2">
-      <button id="btnDrawLotto" onclick="drawLotto()">제비 뽑기</button>
-    </div>
+<div id="lottoMode" class="hidden">
+  <label id="lblLottoCount">제비뽑기 대상 수</label>
+  <input type="number" id="lottoCount" placeholder="예: 10" data-i18n-placeholder="phLottoCount">
+  <label id="lblLottoDraw">몇 명을 뽑을까요?</label>
+  <input type="number" id="lottoDraw" placeholder="예: 2" data-i18n-placeholder="phLottoDraw">
+  <button id="btnDrawLotto" onclick="drawLotto()">제비 뽑기</button>
+</div>
 
-    <div id="wheelMode" class="hidden">
-      <label id="lblWheelInput">대상 이름 (쉼표로 구분) 또는 숫자 개수</label>
-      <input type="text" id="wheelInput" placeholder="예: 철수, 영희 또는 10" oninput="parseWheelInput()">
-      <button id="btnSpinWheel" onclick="spinWheel()">🎡 돌리기</button>
-      <div id="wheelWrapper">
-        <div class="pointer"></div>
-        <canvas id="wheelCanvas" width="300" height="300"></canvas>
-      </div>
-      <div id="wheelResult"></div>
-    </div>
+<div id="wheelMode" class="hidden">
+  <label id="lblWheelInput">대상 이름 (쉼표로 구분) 또는 숫자 개수</label>
+  <input type="text" id="wheelInput" placeholder="예: 철수, 영희 또는 10" data-i18n-placeholder="phWheelInput" oninput="parseWheelInput()">
+  <button id="btnSpinWheel" onclick="spinWheel()">🎡 돌리기</button>
+  <div id="wheelWrapper">
+    <div class="pointer"></div>
+    <canvas id="wheelCanvas" width="300" height="300"></canvas>
+  </div>
+  <div id="wheelResult"></div>
+</div>
 
-    <div id="rangeMode" class="hidden">
-      <label id="lblTotalCount">총 인원 수</label>
-      <input type="number" id="totalCount" placeholder="예: 17">
-      <label id="lblRangeGroupCount">모둠 수</label>
-      <input type="number" id="rangeGroupCount" placeholder="예: 8">
-      <label id="lblRangeOne">범위1 (예: 1-8)</label>
-      <input type="text" id="rangeOne" placeholder="1-8">
-      <label id="lblRangeTwo">범위2 (예: 9-17)</label>
-      <input type="text" id="rangeTwo" placeholder="9-17">
-      <button id="btnDrawByRange" onclick="drawByRange()">범위별 랜덤 조 뽑기</button>
-    </div>
+<div id="rangeMode" class="hidden">
+  <label id="lblTotalCount">총 인원 수</label>
+  <input type="number" id="totalCount" placeholder="예: 17" data-i18n-placeholder="phTotalCount">
+  <label id="lblRangeGroupCount">모둠 수</label>
+  <input type="number" id="rangeGroupCount" placeholder="예: 8" data-i18n-placeholder="phRangeGroupCount">
+  <label id="lblRangeOne">범위1 (예: 1-8)</label>
+  <input type="text" id="rangeOne" placeholder="1-8" data-i18n-placeholder="phRangeOne">
+  <label id="lblRangeTwo">범위2 (예: 9-17)</label>
+  <input type="text" id="rangeTwo" placeholder="9-17" data-i18n-placeholder="phRangeTwo">
+  <button id="btnDrawByRange" onclick="drawByRange()">범위별 랜덤 조 뽑기</button>
+</div>
 
     <button id="btnClear" onclick="clearResult()">결과 초기화</button>
     <div id="result" class="result"></div>
@@ -192,7 +192,20 @@ const translations = {
     lblRangeOne: "범위1 (예: 1-8)",
     lblRangeTwo: "범위2 (예: 9-17)",
     btnDrawByRange: "범위별 랜덤 조 뽑기",
-    btnClear: "결과 초기화"
+    btnClear: "결과 초기화",
+
+    // placeholders
+    phNames: "예: 철수, 영희, 민수",
+    phGroupCountName: "예: 3",
+    phCount: "예: 10",
+    phGroupCount: "예: 3",
+    phLottoCount: "예: 10",
+    phLottoDraw: "예: 2",
+    phWheelInput: "예: 철수, 영희 또는 10",
+    phTotalCount: "예: 17",
+    phRangeGroupCount: "예: 8",
+    phRangeOne: "1-8",
+    phRangeTwo: "9-17"
   },
   en: {
     title: "Seat Picker",
@@ -217,7 +230,20 @@ const translations = {
     lblRangeOne: "Range 1 (ex: 1-8)",
     lblRangeTwo: "Range 2 (ex: 9-17)",
     btnDrawByRange: "Draw Range Groups",
-    btnClear: "Clear Results"
+    btnClear: "Clear Results",
+
+    // placeholders
+    phNames: "Ex: John, Emma, Alex",
+    phGroupCountName: "Ex: 3",
+    phCount: "Ex: 10",
+    phGroupCount: "Ex: 3",
+    phLottoCount: "Ex: 10",
+    phLottoDraw: "Ex: 2",
+    phWheelInput: "Ex: John, Emma or 10",
+    phTotalCount: "Ex: 17",
+    phRangeGroupCount: "Ex: 8",
+    phRangeOne: "1-8",
+    phRangeTwo: "9-17"
   }
 };
 
