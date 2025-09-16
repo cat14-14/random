@@ -103,43 +103,47 @@
 </head>
 <body>
   <div class="container">
-    <h1>자리 뽑기</h1>
+    <div class="lang-switch">
+      <button onclick="setLanguage('ko')">🇰🇷</button>
+      <button onclick="setLanguage('en')">🇺🇸</button>
+    </div>
+    <h1 id="title">자리 뽑기</h1>
     <div class="mode-selector">
-      <button onclick="setMode('name')">이름으로 뽑기</button>
-      <button onclick="setMode('number')">번호로 뽑기</button>
-      <button onclick="setMode('lotto')">제비뽑기</button>
-      <button onclick="setMode('wheel')">돌림판</button>
-      <button onclick="setMode('range')">범위별 랜덤 조</button>
+      <button id="btnName" onclick="setMode('name')">이름으로 뽑기</button>
+      <button id="btnNumber" onclick="setMode('number')">번호로 뽑기</button>
+      <button id="btnLotto" onclick="setMode('lotto')">제비뽑기</button>
+      <button id="btnWheel" onclick="setMode('wheel')">돌림판</button>
+      <button id="btnRange" onclick="setMode('range')">범위별 랜덤 조</button>
     </div>
 
     <div id="nameMode">
-      <label>이름 목록 (쉼표로 구분)</label>
+      <label id="lblNames">이름 목록 (쉼표로 구분)</label>
       <input type="text" id="names" placeholder="예: 철수, 영희, 민수">
-      <label>모둠 수</label>
+      <label id="lblGroupCountName">모둠 수</label>
       <input type="number" id="groupCountName" placeholder="예: 3">
-      <button onclick="drawByName()">이름 모둠 뽑기</button>
+      <button id="btnDrawByName" onclick="drawByName()">이름 모둠 뽑기</button>
     </div>
 
     <div id="numberMode" class="hidden">
-      <label>총 인원 수</label>
+      <label id="lblCount">총 인원 수</label>
       <input type="number" id="count" placeholder="예: 10">
-      <label>모둠 수</label>
+      <label id="lblGroupCount">모둠 수</label>
       <input type="number" id="groupCount" placeholder="예: 3">
-      <button onclick="drawByNumber()">번호 모둠 뽑기</button>
+      <button id="btnDrawByNumber" onclick="drawByNumber()">번호 모둠 뽑기</button>
     </div>
 
     <div id="lottoMode" class="hidden">
-      <label>제비뽑기 대상 수</label>
+      <label id="lblLottoCount">제비뽑기 대상 수</label>
       <input type="number" id="lottoCount" placeholder="예: 10">
-      <label>몇 명을 뽑을까요?</label>
+      <label id="lblLottoDraw">몇 명을 뽑을까요?</label>
       <input type="number" id="lottoDraw" placeholder="예: 2">
-      <button onclick="drawLotto()">제비 뽑기</button>
+      <button id="btnDrawLotto" onclick="drawLotto()">제비 뽑기</button>
     </div>
 
     <div id="wheelMode" class="hidden">
-      <label>대상 이름 (쉼표로 구분) 또는 숫자 개수</label>
+      <label id="lblWheelInput">대상 이름 (쉼표로 구분) 또는 숫자 개수</label>
       <input type="text" id="wheelInput" placeholder="예: 철수, 영희 또는 10" oninput="parseWheelInput()">
-      <button onclick="spinWheel()">🎡 돌리기</button>
+      <button id="btnSpinWheel" onclick="spinWheel()">🎡 돌리기</button>
       <div id="wheelWrapper">
         <div class="pointer"></div>
         <canvas id="wheelCanvas" width="300" height="300"></canvas>
@@ -148,22 +152,88 @@
     </div>
 
     <div id="rangeMode" class="hidden">
-      <label>총 인원 수</label>
+      <label id="lblTotalCount">총 인원 수</label>
       <input type="number" id="totalCount" placeholder="예: 17">
-      <label>모둠 수</label>
+      <label id="lblRangeGroupCount">모둠 수</label>
       <input type="number" id="rangeGroupCount" placeholder="예: 8">
-      <label>범위1 (예: 1-8)</label>
+      <label id="lblRangeOne">범위1 (예: 1-8)</label>
       <input type="text" id="rangeOne" placeholder="1-8">
-      <label>범위2 (예: 9-17)</label>
+      <label id="lblRangeTwo">범위2 (예: 9-17)</label>
       <input type="text" id="rangeTwo" placeholder="9-17">
-      <button onclick="drawByRange()">범위별 랜덤 조 뽑기</button>
+      <button id="btnDrawByRange" onclick="drawByRange()">범위별 랜덤 조 뽑기</button>
     </div>
 
-    <button onclick="clearResult()">결과 초기화</button>
+    <button id="btnClear" onclick="clearResult()">결과 초기화</button>
     <div id="result" class="result"></div>
   </div>
 
 <script>
+const translations = {
+  ko: {
+    title: "자리 뽑기",
+    btnName: "이름으로 뽑기",
+    btnNumber: "번호로 뽑기",
+    btnLotto: "제비뽑기",
+    btnWheel: "돌림판",
+    btnRange: "범위별 랜덤 조",
+    lblNames: "이름 목록 (쉼표로 구분)",
+    lblGroupCountName: "모둠 수",
+    btnDrawByName: "이름 모둠 뽑기",
+    lblCount: "총 인원 수",
+    lblGroupCount: "모둠 수",
+    btnDrawByNumber: "번호 모둠 뽑기",
+    lblLottoCount: "제비뽑기 대상 수",
+    lblLottoDraw: "몇 명을 뽑을까요?",
+    btnDrawLotto: "제비 뽑기",
+    lblWheelInput: "대상 이름 (쉼표로 구분) 또는 숫자 개수",
+    btnSpinWheel: "🎡 돌리기",
+    lblTotalCount: "총 인원 수",
+    lblRangeGroupCount: "모둠 수",
+    lblRangeOne: "범위1 (예: 1-8)",
+    lblRangeTwo: "범위2 (예: 9-17)",
+    btnDrawByRange: "범위별 랜덤 조 뽑기",
+    btnClear: "결과 초기화"
+  },
+  en: {
+    title: "Seat Picker",
+    btnName: "Pick by Name",
+    btnNumber: "Pick by Number",
+    btnLotto: "Lottery",
+    btnWheel: "Wheel",
+    btnRange: "Range Groups",
+    lblNames: "Name list (comma separated)",
+    lblGroupCountName: "Number of groups",
+    btnDrawByName: "Draw by Name",
+    lblCount: "Total participants",
+    lblGroupCount: "Number of groups",
+    btnDrawByNumber: "Draw by Number",
+    lblLottoCount: "Total participants for lottery",
+    lblLottoDraw: "How many to pick?",
+    btnDrawLotto: "Draw Lottery",
+    lblWheelInput: "Names (comma separated) or number count",
+    btnSpinWheel: "🎡 Spin Wheel",
+    lblTotalCount: "Total participants",
+    lblRangeGroupCount: "Number of groups",
+    lblRangeOne: "Range 1 (ex: 1-8)",
+    lblRangeTwo: "Range 2 (ex: 9-17)",
+    btnDrawByRange: "Draw Range Groups",
+    btnClear: "Clear Results"
+  }
+};
+
+function setLanguage(lang) {
+  const t = translations[lang];
+  for (const key in t) {
+    const el = document.getElementById(key);
+    if (el) {
+      if (el.tagName === 'INPUT') {
+        el.placeholder = t[key];
+      } else {
+        el.textContent = t[key];
+      }
+    }
+  }
+}
 function setMode(mode) {
   ['name', 'number', 'lotto', 'wheel', 'range'].forEach(id => {
     const el = document.getElementById(id + 'Mode');
